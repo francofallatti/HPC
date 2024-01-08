@@ -2,7 +2,7 @@
 
 1. Realizar un Hello World y un contador de iteraciones en C, compilarlo y ejercutar
    ```console
-   gcc (o g++) –o hola HelloWorld.c
+   gcc (o g++) –o HelloWorld HelloWorld.c
    ./HelloWorld
    ```
 
@@ -14,6 +14,6 @@
   }
   ```
   ```console
-  gcc (o g++) –o hola HelloWorldParallel.c -fopenmp
+  gcc (o g++) –o HelloWorldParallel HelloWorldParallel.c -fopenmp
   ./HelloWorldParallel
   ```
