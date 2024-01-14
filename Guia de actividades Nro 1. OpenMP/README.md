@@ -141,6 +141,7 @@
     Bye
    ```
 3. Crear un programa en OpenMP que informe
+
    - La cantidad de hilos que se pidió al ejecutar el programa (lo solicitamos desde la línea de comandos).
    - La cantidad de procesadores disponibles y que muestre el modelo fork/join mostrando en pantalla que está ejecutando un solo hilo.
    - A continuación, que se ingresa a la región paralela mostrando que se abre la ejecución de n hilos.
@@ -150,3 +151,27 @@
      - `int omp get_max_threads(void);` Regresa el número máximo de hilos que pueden ser usados por un nuevo equipo que use la construcción parallel sin la cláusula num_threads.
      - `int omp get_thread_num(void);` Regresa la identidad del hilo en que se encuentra donde la identidad tiene un rango de 0 al tamaño del equipo de hilos menos 1.
      - `int omp get_num_procs(void);` Regresa el número de procesadores disponibles para el programa
+
+4. En esta programación puede presentarse la llamada condición de carrera o _race condition_ que ocurre cuando Varios hilos tienen acceso a recursos compartidos **sin control**. El caso más común se da cuando en un programa varios hilos tienen acceso concurrente a una misma dirección de memoria (variable) y todos o algunos en algún momento intentan escribir en la misma localidad al mismo tiempo. Esto es un conflicto que genera salidas incorrectas o impredecibles del programa.
+   En OpenMP al trabajar con hilos se sabe que hay partes de la memoria que comparten entre ellos y otras no. Por lo que habrá variables que serán compartidas entre los hilos, a las cuales todos los hilos tienen acceso y las pueden modificar, y habrá otras que serán propias o privadas de cada uno.
+   Dentro del código se dirá que cualquier variable que esté declarada fuera de la región paralela será compartida y cualquier variable declarada dentro de la región paralela será privada.
+   Continuar con el código de la actividad 2. Sacar de la región paralela la declaración de la variable entera i. Compilar y ejecutar el programa varias veces.
+
+   ```c
+   #include<stdio.h>
+   #include<omp.h>
+
+   int main(){
+     #pragma omp parallel
+     {
+       printf("Hello World!\n");
+       for(int i=0; i<10; i++){
+         printf("Iteration: %d\n", i);
+       }
+     }
+     printf("Bye \n");
+     return 0;
+   }
+   ```
+
+   - ¿Qué sucedió? ¿Por qué sucede esto? De una explicación
