@@ -140,3 +140,13 @@
     Iteration: 9
     Bye
    ```
+3. Crear un programa en OpenMP que informe
+   - La cantidad de hilos que se pidió al ejecutar el programa (lo solicitamos desde la línea de comandos).
+   - La cantidad de procesadores disponibles y que muestre el modelo fork/join mostrando en pantalla que está ejecutando un solo hilo.
+   - A continuación, que se ingresa a la región paralela mostrando que se abre la ejecución de n hilos.
+   - Y por último se cierra la región paralela y sigue con 1 hilo de ejecución para finalizar.
+     - `void omp_set_num_threads ( int num_threads );` Afecta el número de hilos usados por las regiones paralelas subsecuentes que no especifican una clausula num_threads.
+     - `int omp get_num_threads(void);` Regresa el número de hilos de equipo actual.
+     - `int omp get_max_threads(void);` Regresa el número máximo de hilos que pueden ser usados por un nuevo equipo que use la construcción parallel sin la cláusula num_threads.
+     - `int omp get_thread_num(void);` Regresa la identidad del hilo en que se encuentra donde la identidad tiene un rango de 0 al tamaño del equipo de hilos menos 1.
+     - `int omp get_num_procs(void);` Regresa el número de procesadores disponibles para el programa
