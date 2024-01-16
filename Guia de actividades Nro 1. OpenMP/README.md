@@ -212,4 +212,5 @@
 
       Al hace que `i` sea privada para cada hilo utilizando `private(i)` en la directiva parallel se elimina la _race condition_, ya que esto ocurre cuando múltiples hilos acceden y modifican una variable compartida. Estos hilos compartian la variable `i`, al utilizar `private(i)` se crea una copia de la variable para cada hilo, lo que la hace independiente para cada hilo, anulando la condicion de carrera.
 
-6.
+6.  Dentro de una región paralela hay un número de hilos generados y cada uno tiene asignado un identificador. Estos datos se pueden conocer durante la ejecución con la llamada a las funciones.
+    Probar el siguiente ejemplo, y notar que para su buen funcionamiento se debe indicar que la variable tid sea privada dentro de la región paralela, ya que de no ser así todos los hilos escribirán en la dirección de memoria asignada a dicha variable sin un control (_race condition_), es decir “competirán” para ver quién llega antes y el resultado visualizado puede ser inconsistente e impredecible.
