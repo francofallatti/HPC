@@ -7,9 +7,9 @@ int main () {
 
     #pragma omp parallel private(tid)
     {
-        tid = omp_get_thread_num();
-        nth = omp_get_max_threads();
-        printf("Hello World desde el hilo %d de un total de %d\n", tid, nth);
+        tid = omp_get_thread_num();  // Returns the thread id
+        nth = omp_get_max_threads(); // Returns the maximum number of threads
+        printf("Hello World from thread %d out of a total of %d\n", tid, nth);
     }
 
     printf("Bye");

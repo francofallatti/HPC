@@ -214,3 +214,27 @@
 
 6.  Dentro de una región paralela hay un número de hilos generados y cada uno tiene asignado un identificador. Estos datos se pueden conocer durante la ejecución con la llamada a las funciones.
     Probar el siguiente ejemplo, y notar que para su buen funcionamiento se debe indicar que la variable tid sea privada dentro de la región paralela, ya que de no ser así todos los hilos escribirán en la dirección de memoria asignada a dicha variable sin un control (_race condition_), es decir “competirán” para ver quién llega antes y el resultado visualizado puede ser inconsistente e impredecible.
+
+7.  Se requiere realizar la suma de dos arreglos unidimensionales de 10 elementos de forma paralela utilizando solo dos hilos. Para ello se utilizará un paralelismo de datos o descomposición de dominio, es decir, cada hilo trabajará con diferentes elementos de los arreglos a sumar, A y B, pero ambos utilizarán el mismo algoritmo para realizar la suma. Ver la figura siguiente:
+
+    ![Image p7](../img/p7.png)
+
+    La versión serial suma A y B de la siguiente manera:
+
+    ```c
+      for ( i= 0; i < 10; i++)
+            C[i] = A[i] + B[i];
+    ```
+
+    1. Realizar el programa en su versión serial.
+    2. En la versión paralela, el hilo 0 sumará la primera mitad de A con la primera de B y el hilo 1 sumará la segunda mitad de A con la segunda de B. Para conseguir esto cada hilo realizará las mismas instrucciones, pero utilizará índices diferentes para referirse a diferentes elementos de los arreglos, entonces cada uno iniciará y terminará el índice i en valores diferentes.
+       Inicio y fin pueden calcularse de la siguiente manera, sabiendo que tid es el identificador de cada hilo:
+
+       ```c
+        Inicio = tid * 5;
+        Fin = (tid + 1) * 5 -1;
+       ```
+
+    3. Implementar el código anterior para un arreglo de cantidad variable de elementos, aunque siempre A y B tienen la misma cantidad. Este valor debe ser un parámetro de entrada del programa. Buscar funciones de OpenMP que permitan medir los tiempos de ejecución de toda la ejecución. Comparar con los tiempos de la versión serial para valores muy grandes de elementos.
+
+    4. Subir al Campus el código de la parte c y un gráfico que compare los tiempos seriales y paralelo para valores de n lo suficientemente grandes.
