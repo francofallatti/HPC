@@ -211,3 +211,5 @@
     - ¿Qué sucedió?
 
       Al hace que `i` sea privada para cada hilo utilizando `private(i)` en la directiva parallel se elimina la _race condition_, ya que esto ocurre cuando múltiples hilos acceden y modifican una variable compartida. Estos hilos compartian la variable `i`, al utilizar `private(i)` se crea una copia de la variable para cada hilo, lo que la hace independiente para cada hilo, anulando la condicion de carrera.
+
+6.
