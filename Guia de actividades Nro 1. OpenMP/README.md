@@ -202,3 +202,12 @@
 
       Se puede observar en los ejemplos que hay una _race condition_ en la variable `i` dentro de la región paralela, que ocurre cuando múltiples hilos acceden y modifican la variable compartida. Estos hilos comparten la variable `i` y la incrementan, cada hilo imprime iteraciones intercaladas, ya que todos los hilos estan modificando la misma variable. La salida es impredecible, muestra una secuencia diferente de iteraciones y varía entre ejecuciones debido a la competencia entre hilos por modificar esta variable. Esto ocurre porque no se ha sincronizado el acceso a la variable `i` entre los hilos.
       En el código original (`1_HelloWorldParallel.c`), la variable estaba declarada dentro de la región paralela, lo que la hacia independiente para cada hilo, anulando la condicion de carrera. En este punto para evitar esto, se podria hace que `i` sea privada para cada hilo utilizando `private(i)` en la directiva parallel.
+
+5.  Existen dos cláusulas que pueden forzar a que una variable privada sea compartida y una compartida sea privada y son las siguientes:
+    `shared()`: Las variables colocadas separadas por comas dentro del paréntesis serán compartidas entre todos los hilos de la región paralela. Sólo existe una copia, y todos los hilos acceden y modifican dicha copia.
+    `private()`: Las variables colocadas separadas por coma dentro del paréntesis serán privadas. Si tenemos p hilos entonces se crean p copias, una por hilo, las cuales no se inicializan y no tienen un valor definido al final de la región paralela, ya que se destruyen al finalizar la ejecución de los hilos.
+    Al código resultante de la actividad 4, agregar la cláusula private( ) después del constructor parallel y colocar la variable i:
+
+    - ¿Qué sucedió?
+
+      Al hace que `i` sea privada para cada hilo utilizando `private(i)` en la directiva parallel se elimina la _race condition_, ya que esto ocurre cuando múltiples hilos acceden y modifican una variable compartida. Estos hilos compartian la variable `i`, al utilizar `private(i)` se crea una copia de la variable para cada hilo, lo que la hace independiente para cada hilo, anulando la condicion de carrera.
