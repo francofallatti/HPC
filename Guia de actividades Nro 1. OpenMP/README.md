@@ -236,5 +236,12 @@
        ```
 
     3. Implementar el código anterior para un arreglo de cantidad variable de elementos, aunque siempre A y B tienen la misma cantidad. Este valor debe ser un parámetro de entrada del programa. Buscar funciones de OpenMP que permitan medir los tiempos de ejecución de toda la ejecución. Comparar con los tiempos de la versión serial para valores muy grandes de elementos.
-
-    4. Subir al Campus el código de la parte c y un gráfico que compare los tiempos seriales y paralelo para valores de n lo suficientemente grandes.
+       ```bash
+         Serial Execution Time: 27.714000 seconds
+         Parallel Execution Time: 22.518000 seconds
+       ```
+       Aunque no es muy notable, hay diferencia entre los tiempos de ejecución para un array de 120000 elementos. En la versión paralela se utiliza `set OMP_NUM_THREADS=2`, que establece la utilización de dos hilos en la región paralela. Esta es la forma más eficiente de la implementación del algoritmo con múltiples hilos, ya que con cualquier otra implementación, por ejemplo, ` set OMP_NUM_THREADS=6`, se produce una degradación del tiempo de ejecución debido al costo asociado a la creación y gestión de hilos (context switch).
+       Implementación del algoritmo con 6 hilos:
+       ```bash
+         Parallel Execution Time: 40.793000 seconds
+       ```

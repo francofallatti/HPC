@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <omp.h>
 #include <math.h>
-#define n 10
+#define n 120000
 
 void printArray(int a[n]) {
     printf("[ ");
@@ -33,6 +33,8 @@ void sumArray(int a[n], int b[n], int c[n]) {
 }
 
 int main() {
+    double start_time = omp_get_wtime();
+
     int a[n], b[n], c[n];
 
     fillArrayA(a);
@@ -44,6 +46,15 @@ int main() {
     printArray(b);
 
     sumArray(a, b, c);
+
+
+
+    for (int i = 0; i < n; i++) {
+        c[i] = a[i] + b[i];
+    }
+
+    double end_time = omp_get_wtime();
+    printf("Serial Execution Time: %f seconds\n", end_time - start_time);
 
     return 0;
 }

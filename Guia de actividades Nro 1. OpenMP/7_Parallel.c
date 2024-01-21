@@ -30,8 +30,8 @@ void sumArray(int a[n], int b[n], int c[n]) {
     {
         int tid = omp_get_thread_num();
 
-        int start = tid * (n / 2);
-        int end = start + (n / 2);
+        int start = tid * 5;
+        int end = start + 5;
 
         for (int i = start; i < end; i++) {
             c[i] = a[i] + b[i];
