@@ -245,3 +245,22 @@
        ```bash
          Parallel Execution Time: 40.793000 seconds
        ```
+
+8.  Otro constructor es el for, el cual divide las iteraciones de una estructura de repetición for. Para utilizarlo se debe estar dentro de una región paralela.
+    Su sintaxis es:
+    ```C
+     #pragma omp parallel
+     {
+       ...
+       #pragma omp for
+         for(i=0; i<12; i++) {
+           do_something();
+         }
+       ...
+     }
+    ```
+
+La variable de control `i` se hará privada de forma automática. Esto para que cada hilo trabaje con su propia variable `i`.
+Este constructor se utiliza comúnmente en el llamado paralelismo de datos o descomposición de dominio, lo que significa que, cuando en el análisis del algoritmo se detecta que varios hilos pueden trabajar con el mismo algoritmo o instrucciones que se repetirán, pero sobre diferentes datos y no hay dependencias con iteraciones anteriores.
+Por lo anterior, no siempre es conveniente dividir las iteraciones de un ciclo for.
+Modificar el código de la actividad 1, de manera que se dividan las iteraciones de la estructura de repetición for.
