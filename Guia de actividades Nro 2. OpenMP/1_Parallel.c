@@ -6,19 +6,13 @@ int buscaMaximo(int *a, int desde, int hasta) {
     int i;
 
     // OpenMP paraleliza solo el bucle for
-    #pragma omp parallel reduction(max:max_local) num_threads(2) 
-    {
-        int tid = omp_get_thread_num();
-        #pragma omp for 
+    #pragma omp parallel for reduction(max:max_local) num_threads(2) 
         for (i = desde + 1; i < hasta; i++) {
             if (a[i] > max_local) {
                 max_local = a[i];
             }
-        }
-        printf("Maximun in theread %d is: %d\n", tid, max_local);
-    }
-    
-    
+            printf("Maximun in theread %d is: %d\n", omp_get_thread_num(), max_local);
+        } 
     return max_local;
 }
 
