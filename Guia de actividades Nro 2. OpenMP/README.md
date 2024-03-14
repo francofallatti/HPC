@@ -29,11 +29,11 @@
 
     ### Cláusula reduction
     Para conocer cómo opera esta cláusula pensemos un ejemplo: 
-    Realizar el producto escalar entre dos vectores de n elementos cada uno, el cual se grafica a continuación:
+    Realizar el producto escalar entre dos vectores de n elementos cada uno, el cual se grafica a continuación:\
     ![Image p1](../img/p1.png)
 
     Para tener una solución paralela con hilos que cooperen en el cómputo se analizará dividir el cálculo entre los n hilos. Otra vez hay que repartir el arreglo en sub-arreglos y encontrar los índices en función del Id del hilo.
-    La siguiente es una primera manera de paralelizarlo usando la cláusula for:
+    La siguiente es una primera manera de paralelizarlo usando la cláusula for:\
     ![Image p1b](../img/p1b.png)
 
     - Implementar este código.
