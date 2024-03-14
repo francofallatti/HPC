@@ -41,24 +41,6 @@
     - ¿Cuál es la función de la variable RES?
     - Explique el comportamiento del algoritmo
 
-    La variable `res` se utiliza para acumular el resultado del producto escalar de dos vectores. La `reduction(+:res)` en la directiva `#pragma omp parallel` indica que cada hilo debe tener su propia copia de `res`, y al final de la región paralela, se combinarán todos los valores de `res` de los diferentes hilos mediante una operación de suma de reduction. Esto significa que cada hilo realiza su propio cálculo parcial del producto escalar y al final, estos resultados parciales se suman para obtener el resultado final del producto escalar.
-    Se inicia una región paralela con dos hilos utilizando `#pragma omp parallel reduction(+:res) num_threads(2)`. Cada hilo obtiene su número de identificación (tid) utilizando `omp_get_thread_num()`. El bucle for es paralelizado con `#pragma omp for`. Cada hilo ejecuta una porción del bucle, sumando el producto de los elementos correspondientes de los vectores a y b a su variable local `res`. Al final de la región paralela, se devuelve el valor acumulado de `res`, que representa el producto escalar de los dos vectores.
+    Se inicia una región paralela con dos hilos utilizando `#pragma omp parallel reduction(+:res) num_threads(2)`. Cada hilo obtiene su número de identificación (tid) utilizando `omp_get_thread_num()`. La variable `res` se utiliza para acumular el resultado del producto escalar de dos vectores. La directiva `reduction(+:res)` indica que cada hilo debe tener su propia copia de `res`, y al final de la región paralela, se combinarán todos los valores de `res` de los diferentes hilos mediante una operación de suma de reduction. El bucle for es paralelizado con `#pragma omp for`. Cada hilo ejecuta una porción del bucle, sumando el producto de los elementos correspondientes de los vectores a y b a su variable local `res`. Al final de la región paralela, se devuelve el valor acumulado de `res`, que representa el producto escalar de los dos vectores. Esto significa que cada hilo realiza su propio cálculo parcial del producto escalar y al final, estos resultados parciales se suman para obtener el resultado final del producto escalar.
+     
 
-- Agregar constructor paralelo, compilarlo y ejercutar
-
-  ```C
-  #pragma omp parallel
-  {
-  	...
-  }
-  ```
-
-  ```bash
-  gcc (o g++) –o HelloWorldParallel HelloWorldParallel.c -fopenmp
-  ./HelloWorldParallel
-  ```
-
-- ¿Qué diferencia hay en la salida? Explique en función del hardware sobre el que está ejecutando el programa.
-  La directiva `#pragma omp parallel` indica que el bloque de código siguiente debe ejecutarse en paralelo. La diferencia en la salida radica en que, debido a la directiva OpenMP, el bloque de código dentro del `pragma #pragma omp` parallel se ejecutará en varios hilos simultáneamente. Entonces, las multiples lineas "Hello World" y las iteraciones del bucle se imprimen en un orden no secuencial, ya que varios hilos se ejecutan de manera concurrente y pueden imprimir su salida en un orden intercalado. El orden y la cantidad de lineas pueden variar dependiendo de cómo se maneje la ejecución en el hardware (según el Scheduler) en el que se está ejecutando el programa. Tambien toma relevancia la catidad de núcleos disponibles en el hardware. En sistemas con un solo núcleo, el programa se ejecutará secuencialmente y dará una salida igual a la del primer programa.
-
-2.  En cada región paralela hay un número de hilos generados por defecto y ese número es igual al de unidades de procesamiento que se tengan en la computadora paralela que se esté utilizando, en este caso el número de núcleos que tenga el procesador.
