@@ -44,3 +44,9 @@
     Se inicia una región paralela con dos hilos utilizando `#pragma omp parallel reduction(+:res) num_threads(2)`. Cada hilo obtiene su número de identificación (tid) utilizando `omp_get_thread_num()`. La variable `res` se utiliza para acumular el resultado del producto escalar de dos vectores. La directiva `reduction(+:res)` indica que cada hilo debe tener su propia copia de `res`, y al final de la región paralela, se combinarán todos los valores de `res` de los diferentes hilos mediante una operación de suma de reduction. El bucle for es paralelizado con `#pragma omp for`. Cada hilo ejecuta una porción del bucle, sumando el producto de los elementos correspondientes de los vectores a y b a su variable local `res`. Al final de la región paralela, se devuelve el valor acumulado de `res`, que representa el producto escalar de los dos vectores. Esto significa que cada hilo realiza su propio cálculo parcial del producto escalar y al final, estos resultados parciales se suman para obtener el resultado final del producto escalar.
      
 
+2. Escribir una solución posible para el problema anterior usando un arreglo de resultados RES. Reescribir la solución anterior usando la cláusula reduction
+
+La cláusula reduction toma el valor de una variable aportada por cada hilo y aplica la operación indicada sobre esos datos para obtener un resultado correcto libre de race conditions. Esta cláusula suma todos los res parciales de cada hilo y deja la suma acumulada de todos en la
+misma variable res. Algunos operadores válidos para utilizar en la cláusula reduction:
+![reduction](../img/reduction.png)
+

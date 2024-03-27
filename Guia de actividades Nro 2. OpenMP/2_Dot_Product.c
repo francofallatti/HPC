@@ -4,8 +4,10 @@
 #include <time.h>
 #define n 10
 
-double dotProduct(double *a, double *b){
-    double res = 0;
+void printArray(double a[n]);
+
+double dotProduct(double *a, double *b) {
+    double res = 0, resArr[n];
     int i;
 
     #pragma omp parallel reduction(+:res) num_threads(2)
@@ -15,10 +17,13 @@ double dotProduct(double *a, double *b){
         #pragma omp for
         for(i = 0; i < n; i++){
             res += a[i] * b[i];
+            resArr[i] = a[i] * b[i];
             printf("Dot Product iteration with thread %d is: %lf \n", tid, res);
         }
     }
-    
+    printf("Array of results: ");
+    printArray(resArr);
+
     return res;
 }
 
