@@ -70,3 +70,6 @@ Sections es un constructor que permite la programación paralela funcional (desc
     | a[2] = 4           | a[2] = 6          |
     | a[3] = 9           | a[3] = 12         |
     | a[4] = 16          | a[4] = 20         |
+
+    
+    Al reemplazar `#pragma omp master` con `#pragma omp single` el bloque de código solo será ejecutado por un único hilo en el equipo, pero esto no garantiza que el hilo que ejecutará el bloque sea siempre el hilo maestro. Puede ser cualquier hilo que llegue primero al punto de ejecución.
