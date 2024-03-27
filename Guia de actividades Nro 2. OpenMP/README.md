@@ -48,5 +48,25 @@
 
 La cláusula reduction toma el valor de una variable aportada por cada hilo y aplica la operación indicada sobre esos datos para obtener un resultado correcto libre de race conditions. Esta cláusula suma todos los res parciales de cada hilo y deja la suma acumulada de todos en la
 misma variable res. Algunos operadores válidos para utilizar en la cláusula reduction:
+
 ![reduction](../img/reduction.png)
 
+## Constructor Sections
+Sections es un constructor que permite la programación paralela funcional (descomposición funcional) debido a que permite construir secciones de código independiente a hilos diferentes que trabajarán en modo concurrente o paralelo. Como se ve en el siguiente esquema:
+
+![sections](../img/sections.png)
+
+3. Probar el ejemplo b. del constructor Barrier visto anteriormente y responder las siguientes preguntas
+    - ¿Qué sucede si se quita la barrera?
+    - Si en lugar del constructor Master se utiliza Single, ¿qué otros cambios se tienen que hacer en el código?
+    - Realice los cambios
+
+    Sí, al quitar la barrera `#pragma omp barrier`, ocurre una race condition al momento de ejecutar el código. Ya quemúltiples hilos acceden y modifican `a[i]` de forma concurrente, y el resultado final depende del orden de ejecución de los hilos. Sin la barrera, los hilos continúan ejecutando la sección de código que modifica los valores de `a[i]` en `a[i] += i;`. Debido a que esta sección que imprime no tiene la barrera, los hilos pueden modificar `a` mientras otro hilo aún están imprimiendo sus valores originales. Como resultado, los valores impresos no son los originales y son incorrectos. Por consola podriamos recibir resultados, como los que se muestran a continuación
+
+    | Con #pragma omp barrier        | Sin #pragma omp barrier       |
+    |--------------------|-------------------|
+    | a[0] = 0           | a[0] = 0          |
+    | a[1] = 1           | a[1] = 2          |
+    | a[2] = 4           | a[2] = 6          |
+    | a[3] = 9           | a[3] = 12         |
+    | a[4] = 16          | a[4] = 20         |
