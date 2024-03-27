@@ -58,8 +58,7 @@ Sections es un constructor que permite la programación paralela funcional (desc
 
 3. Probar el ejemplo b. del constructor Barrier visto anteriormente y responder las siguientes preguntas
     - ¿Qué sucede si se quita la barrera?
-    - Si en lugar del constructor Master se utiliza Single, ¿qué otros cambios se tienen que hacer en el código?
-    - Realice los cambios
+    - Si en lugar del constructor Master se utiliza Single, ¿qué otros cambios se tienen que hacer en el código? Realice los cambios
 
     Sí, al quitar la barrera `#pragma omp barrier`, ocurre una race condition al momento de ejecutar el código. Ya quemúltiples hilos acceden y modifican `a[i]` de forma concurrente, y el resultado final depende del orden de ejecución de los hilos. Sin la barrera, los hilos continúan ejecutando la sección de código que modifica los valores de `a[i]` en `a[i] += i;`. Debido a que esta sección que imprime no tiene la barrera, los hilos pueden modificar `a` mientras otro hilo aún están imprimiendo sus valores originales. Como resultado, los valores impresos no son los originales y son incorrectos. Por consola podriamos recibir resultados, como los que se muestran a continuación
 
@@ -73,3 +72,9 @@ Sections es un constructor que permite la programación paralela funcional (desc
 
     
     Al reemplazar `#pragma omp master` con `#pragma omp single` el bloque de código solo será ejecutado por un único hilo en el equipo, pero esto no garantiza que el hilo que ejecutará el bloque sea siempre el hilo maestro. Puede ser cualquier hilo que llegue primero al punto de ejecución.
+
+4. Una forma de obtener la aproximación del número irracional PI es utilizar la regla del trapecio para dar solución aproximada a la integral definida
+
+    ![pi](../img/pi.png)
+    
+    Se da a continuación el código serial para que se comprenda el método numérico que se utiliza y se pide escribir una versión para OpenMP.
