@@ -11,10 +11,15 @@ int main(int argc, char* argv[]) {
     step = 1.0 / (double)num_steps;
     empezar = omp_get_wtime();
 
-    for (i = 0; i < num_steps; i++){
-        x = (i + .5) * step;
-        sum = sum + 4.0 / (1. + x*x);
+    #pragma omp parallel
+    {
+        #pragma omp for reduction(+:sum)
+        for (i = 0; i < num_steps; i++){
+            x = (i + .5) * step;
+            sum = sum + 4.0 / (1. + x*x);
+        }
     }
+    
 
     pi = sum * step;
     terminar = omp_get_wtime();
