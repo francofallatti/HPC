@@ -33,31 +33,13 @@ public class Main {
             dataSet.add(newData);
             minimum = bigNumber;
             for (int i = 0; i < NUM_CLUSTERS; i++) {
-                distance = dist(newData, centroids.get(i));
+                distance = euclideanDistance(newData, centroids.get(i));
                 if (distance < minimum) {
                     minimum = distance;
                     cluster = i;
                 }
             }
             newData.setCluster(cluster);
-
-            // calculate new centroids.
-            for (int i = 0; i < NUM_CLUSTERS; i++) {
-                int totalX = 0;
-                int totalY = 0;
-                int totalInCluster = 0;
-                for (int j = 0; j < dataSet.size(); j++) {
-                    if (dataSet.get(j).getCluster() == i) {
-                        totalX += (int) dataSet.get(j).getX();
-                        totalY += (int) dataSet.get(j).getY();
-                        totalInCluster++;
-                    }
-                }
-                if (totalInCluster > 0) {
-                    centroids.get(i).setX(totalX / totalInCluster);
-                    centroids.get(i).setY(totalY / totalInCluster);
-                }
-            }
             sampleNumber++;
         }
 
@@ -65,13 +47,13 @@ public class Main {
         while (isStillMoving) {
             // calculate new centroids.
             for (int i = 0; i < NUM_CLUSTERS; i++) {
-                int totalX = 0;
-                int totalY = 0;
+                double totalX = 0;
+                double totalY = 0;
                 int totalInCluster = 0;
-                for (int j = 0; j < dataSet.size(); j++) {
-                    if (dataSet.get(j).getCluster() == i) {
-                        totalX += (int) dataSet.get(j).getX();
-                        totalY += (int) dataSet.get(j).getY();
+                for (Data data : dataSet) {
+                    if (data.getCluster() == i) {
+                        totalX += data.getX();
+                        totalY += data.getY();
                         totalInCluster++;
                     }
                 }
@@ -84,17 +66,15 @@ public class Main {
             // Assign all data to the new centroids
             isStillMoving = false;
 
-            for (int i = 0; i < dataSet.size(); i++) {
-                Data tempData = dataSet.get(i);
+            for (Data tempData : dataSet) {
                 minimum = bigNumber;
                 for (int j = 0; j < NUM_CLUSTERS; j++) {
-                    distance = dist(tempData, centroids.get(j));
+                    distance = euclideanDistance(tempData, centroids.get(j));
                     if (distance < minimum) {
                         minimum = distance;
                         cluster = j;
                     }
                 }
-                tempData.setCluster(cluster);
                 if (tempData.getCluster() != cluster) {
                     tempData.setCluster(cluster);
                     isStillMoving = true;
@@ -110,7 +90,7 @@ public class Main {
      * @param c - Centroid object.
      * @return - double value.
      */
-    private static double dist(Data d, Centroid c) {
+    private static double euclideanDistance(Data d, Centroid c) {
         return Math.sqrt(Math.pow((c.getY() - d.getY()), 2) + Math.pow((c.getX() - d.getX()), 2));
     }
 
