@@ -1,31 +1,28 @@
 public class Centroid {
-    private double mX = 0.0;
-    private double mY = 0.0;
+    private double X = 0.0;
+    private double Y = 0.0;
 
     public Centroid() {
     }
 
-    public Centroid(double newX, double newY) {
-        this.mX = newX;
-        this.mY = newY;
-        return;
+    public Centroid(double x, double y) {
+        this.X = x;
+        this.Y = y;
     }
 
-    public void X(double newX) {
-        this.mX = newX;
-        return;
+    public void setY(double y) {
+        this.Y = y;
     }
 
-    public double X() {
-        return this.mX;
+    public void setX(double x) {
+        this.X = x;
     }
 
-    public void Y(double newY) {
-        this.mY = newY;
-        return;
+    public double getX() {
+        return X;
     }
 
-    public double Y() {
-        return this.mY;
+    public double getY() {
+        return Y;
     }
 }

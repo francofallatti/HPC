@@ -3,10 +3,8 @@ import java.util.ArrayList;
 public class Main {
     private static final int NUM_CLUSTERS = 2; // Total clusters.
     private static final int TOTAL_DATA = 7; // Total data points.
-
     private static final double[][] SAMPLES = new double[][] { { 1.0, 1.0 }, { 1.5, 2.0 }, { 3.0, 4.0 }, { 5.0, 7.0 },
             { 3.5, 5.0 }, { 4.5, 5.0 }, { 3.5, 4.5 } };
-
     private static final ArrayList<Data> dataSet = new ArrayList<Data>();
     private static final ArrayList<Centroid> centroids = new ArrayList<Centroid>();
 
@@ -14,8 +12,8 @@ public class Main {
         System.out.println("Centroids initialized at:");
         centroids.add(new Centroid(1.0, 1.0)); // lowest set.
         centroids.add(new Centroid(5.0, 7.0)); // highest set.
-        System.out.println("     (" + centroids.get(0).X() + ", " + centroids.get(0).Y() + ")");
-        System.out.println("     (" + centroids.get(1).X() + ", " + centroids.get(1).Y() + ")");
+        System.out.println("     (" + centroids.get(0).getX() + ", " + centroids.get(0).getY() + ")");
+        System.out.println("     (" + centroids.get(1).getX() + ", " + centroids.get(1).getY() + ")");
         System.out.print("\n");
         return;
     }
@@ -41,7 +39,7 @@ public class Main {
                     cluster = i;
                 }
             }
-            newData.cluster(cluster);
+            newData.setCluster(cluster);
 
             // calculate new centroids.
             for (int i = 0; i < NUM_CLUSTERS; i++) {
@@ -49,15 +47,15 @@ public class Main {
                 int totalY = 0;
                 int totalInCluster = 0;
                 for (int j = 0; j < dataSet.size(); j++) {
-                    if (dataSet.get(j).cluster() == i) {
-                        totalX += (int) dataSet.get(j).X();
-                        totalY += (int) dataSet.get(j).Y();
+                    if (dataSet.get(j).getCluster() == i) {
+                        totalX += (int) dataSet.get(j).getX();
+                        totalY += (int) dataSet.get(j).getY();
                         totalInCluster++;
                     }
                 }
                 if (totalInCluster > 0) {
-                    centroids.get(i).X(totalX / totalInCluster);
-                    centroids.get(i).Y(totalY / totalInCluster);
+                    centroids.get(i).setX(totalX / totalInCluster);
+                    centroids.get(i).setY(totalY / totalInCluster);
                 }
             }
             sampleNumber++;
@@ -71,15 +69,15 @@ public class Main {
                 int totalY = 0;
                 int totalInCluster = 0;
                 for (int j = 0; j < dataSet.size(); j++) {
-                    if (dataSet.get(j).cluster() == i) {
-                        totalX += (int) dataSet.get(j).X();
-                        totalY += (int) dataSet.get(j).Y();
+                    if (dataSet.get(j).getCluster() == i) {
+                        totalX += (int) dataSet.get(j).getX();
+                        totalY += (int) dataSet.get(j).getY();
                         totalInCluster++;
                     }
                 }
                 if (totalInCluster > 0) {
-                    centroids.get(i).X(totalX / totalInCluster);
-                    centroids.get(i).Y(totalY / totalInCluster);
+                    centroids.get(i).setX(totalX / totalInCluster);
+                    centroids.get(i).setY(totalY / totalInCluster);
                 }
             }
 
@@ -96,9 +94,9 @@ public class Main {
                         cluster = j;
                     }
                 }
-                tempData.cluster(cluster);
-                if (tempData.cluster() != cluster) {
-                    tempData.cluster(cluster);
+                tempData.setCluster(cluster);
+                if (tempData.getCluster() != cluster) {
+                    tempData.setCluster(cluster);
                     isStillMoving = true;
                 }
             }
@@ -113,7 +111,7 @@ public class Main {
      * @return - double value.
      */
     private static double dist(Data d, Centroid c) {
-        return Math.sqrt(Math.pow((c.Y() - d.Y()), 2) + Math.pow((c.X() - d.X()), 2));
+        return Math.sqrt(Math.pow((c.getY() - d.getY()), 2) + Math.pow((c.getX() - d.getX()), 2));
     }
 
     // Main method
@@ -125,8 +123,8 @@ public class Main {
         for (int i = 0; i < NUM_CLUSTERS; i++) {
             System.out.println("Cluster " + i + " includes:");
             for (int j = 0; j < TOTAL_DATA; j++) {
-                if (dataSet.get(j).cluster() == i) {
-                    System.out.println("     (" + dataSet.get(j).X() + ", " + dataSet.get(j).Y() + ")");
+                if (dataSet.get(j).getCluster() == i) {
+                    System.out.println("     (" + dataSet.get(j).getX() + ", " + dataSet.get(j).getY() + ")");
                 }
             } // j
             System.out.println();
@@ -135,7 +133,7 @@ public class Main {
         // Print out centroid results.
         System.out.println("Centroids finalized at:");
         for (int i = 0; i < NUM_CLUSTERS; i++) {
-            System.out.println("     (" + centroids.get(i).X() + ", " + centroids.get(i).Y()+")");
+            System.out.println("     (" + centroids.get(i).getX() + ", " + centroids.get(i).getY()+")");
         }
         System.out.print("\n");
         return;

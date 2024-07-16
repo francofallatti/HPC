@@ -1,41 +1,37 @@
 public class Data {
-    private double mX = 0;
-    private double mY = 0;
-    private int mCluster = 0;
+    private double X = 0;
+    private double Y = 0;
+    private int cluster = 0;
 
     public Data() {
     }
 
     public Data(double x, double y) {
-        this.X(x);
-        this.Y(y);
-        return;
+        this.X = x;
+        this.Y = y;
     }
 
-    public void X(double x) {
-        this.mX = x;
-        return;
+    public void setY(double y) {
+        this.Y = y;
     }
 
-    public double X() {
-        return this.mX;
+    public void setX(double x) {
+        this.X = x;
     }
 
-    public void Y(double y) {
-        this.mY = y;
-        return;
+    public double getX() {
+        return X;
     }
 
-    public double Y() {
-        return this.mY;
+    public double getY() {
+        return Y;
     }
 
-    public void cluster(int clusterNumber) {
-        this.mCluster = clusterNumber;
-        return;
+    public void setCluster(int clusterNumber) {
+        this.cluster = clusterNumber;
     }
 
-    public int cluster() {
-        return this.mCluster;
+    public int getCluster() {
+        return this.cluster;
     }
 }
