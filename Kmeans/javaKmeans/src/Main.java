@@ -1,50 +1,51 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main {
     private static final int NUM_CLUSTERS = 2; // Total clusters.
-    private static final int TOTAL_DATA = 7; // Total data points.
-    private static final double[][] SAMPLES = new double[][] { { 1.0, 1.0 }, { 1.5, 2.0 }, { 3.0, 4.0 }, { 5.0, 7.0 },
-            { 3.5, 5.0 }, { 4.5, 5.0 }, { 3.5, 4.5 } };
     private static final ArrayList<Data> dataSet = new ArrayList<Data>();
     private static final ArrayList<Centroid> centroids = new ArrayList<Centroid>();
 
-    private static void initialize() {
+    private static void initialize(int totalDataPoints, double maxX, double maxY) {
         System.out.println("Centroids initialized at:");
         centroids.add(new Centroid(1.0, 1.0)); // lowest set.
         centroids.add(new Centroid(5.0, 7.0)); // highest set.
         System.out.println("     (" + centroids.get(0).getX() + ", " + centroids.get(0).getY() + ")");
         System.out.println("     (" + centroids.get(1).getX() + ", " + centroids.get(1).getY() + ")");
         System.out.print("\n");
-        return;
+
+        Random rand = new Random();
+        for (int i = 0; i < totalDataPoints; i++) {
+            double x = maxX * rand.nextDouble();
+            double y = maxY * rand.nextDouble();
+            dataSet.add(new Data(x, y));
+        }
     }
 
-    private static void kMeanCluster() {
+    private static int kMeanCluster() {
         final double bigNumber = Math.pow(10, 10); // some big number that's sure to be larger than our data range.
         double minimum = bigNumber; // The minimum value to beat.
         double distance = 0.0; // The current minimum value.
-        int sampleNumber = 0;
         int cluster = 0;
         boolean isStillMoving = true;
-        Data newData = null;
+        int iterations = 0; // Count iterations
 
         // Add in new data, one at a time, recalculating centroids with each new one.
-        while (dataSet.size() < TOTAL_DATA) {
-            newData = new Data(SAMPLES[sampleNumber][0], SAMPLES[sampleNumber][1]);
-            dataSet.add(newData);
+        for (Data data : dataSet) {
             minimum = bigNumber;
             for (int i = 0; i < NUM_CLUSTERS; i++) {
-                distance = euclideanDistance(newData, centroids.get(i));
+                distance = euclideanDistance(data, centroids.get(i));
                 if (distance < minimum) {
                     minimum = distance;
                     cluster = i;
                 }
             }
-            newData.setCluster(cluster);
-            sampleNumber++;
+            data.setCluster(cluster);
         }
 
         // Now, keep shifting centroids until equilibrium occurs.
         while (isStillMoving) {
+            iterations++;
             // calculate new centroids.
             for (int i = 0; i < NUM_CLUSTERS; i++) {
                 double totalX = 0;
@@ -81,7 +82,7 @@ public class Main {
                 }
             }
         }
-        return;
+        return iterations;
     }
 
     /**
@@ -96,19 +97,23 @@ public class Main {
 
     // Main method
     public static void main(String[] args) {
-        initialize();
-        kMeanCluster();
+        int totalDataPoints = 100;
+        double maxX = 10.0; // Maximum value for x-coordinate.
+        double maxY = 10.0; // Maximum value for y-coordinate.
+
+        initialize(totalDataPoints, maxX, maxY);
+        int iterations = kMeanCluster();
 
         // Print out clustering results.
         for (int i = 0; i < NUM_CLUSTERS; i++) {
             System.out.println("Cluster " + i + " includes:");
-            for (int j = 0; j < TOTAL_DATA; j++) {
-                if (dataSet.get(j).getCluster() == i) {
-                    System.out.println("     (" + dataSet.get(j).getX() + ", " + dataSet.get(j).getY() + ")");
+            for (Data data : dataSet) {
+                if (data.getCluster() == i) {
+                    System.out.println("     (" + data.getX() + ", " + data.getY() + ")");
                 }
-            } // j
+            }
             System.out.println();
-        } // i
+        }
 
         // Print out centroid results.
         System.out.println("Centroids finalized at:");
@@ -116,6 +121,7 @@ public class Main {
             System.out.println("     (" + centroids.get(i).getX() + ", " + centroids.get(i).getY()+")");
         }
         System.out.print("\n");
-        return;
+
+        System.out.println("Total iterations: " + iterations); // Print the total iterations
     }
 }
