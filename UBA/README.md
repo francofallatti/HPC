@@ -16,3 +16,6 @@ approximation to the integral in each interval is (1/n)*4/(1+x\*x).
 should then broadcast this number to all of the other processes. Each process then
 adds up every n'th interval (x = rank/n, rank/n+size/n,...).
 • Finally, the sums computed by each process are added together using a reduction.
+
+Commands:
+mpiexec -n 4 python hello-mpi.py

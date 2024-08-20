@@ -1,0 +1,5 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) Stages/2024
+srun: warning: can't run 2 processes on 4 nodes, setting nnodes to 2

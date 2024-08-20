@@ -1,0 +1,56 @@
+Testing Serial Execution
+Maximum is 2
+SEQ used 4.271116 seconds
+Testing MPI Execution with 2 ranks
+Maximum is 2
+MPI 2 ranks used 2.222730 seconds
+Testing MPI Execution with 4 ranks
+Maximum is 2
+MPI 4 ranks used 1.170258 seconds
+Testing MPI Execution with 8 ranks
+Maximum is 2
+MPI 8 ranks used 0.629584 seconds
+Testing MPI Execution with 16 ranks
+Maximum is 2
+MPI 16 ranks used 0.360422 seconds
+Testing MPI Execution with 32 ranks
+Maximum is 2
+MPI 32 ranks used 0.220506 seconds
+Testing MPI Execution with 64 ranks
+Maximum is 2
+MPI 64 ranks used 0.154532 seconds
+Testing MPI Execution with 128 ranks
+Maximum is 2
+MPI 128 ranks used 0.117551 seconds
+Testing OpenMP Execution with 2 threads
+Maximum is 2
+OMP 2 threads used 2.886514 seconds
+Testing OpenMP Execution with 4 threads
+Maximum is 2
+OMP 4 threads used 1.444304 seconds
+Testing OpenMP Execution with 8 threads
+Maximum is 2
+OMP 8 threads used 0.723497 seconds
+Testing OpenMP Execution with 16 threads
+Maximum is 2
+OMP 16 threads used 0.365718 seconds
+Testing OpenMP Execution with 32 threads
+Maximum is 2
+OMP 32 threads used 0.186451 seconds
+Testing OpenMP Execution with 64 threads
+Maximum is 2
+OMP 64 threads used 0.101508 seconds
+Testing OpenMP Execution with 128 threads
+Maximum is 2
+OMP 128 threads used 0.115386 seconds
+Testing Hybrid Execution with 8 ranks and 16 threads
+Maximum is 8981.72
+HYB 8 ranks 16 threads used 1.987679 seconds
+Testing Hybrid Execution with 16 ranks and 8 threads
+Maximum is 7909.1
+HYB 16 ranks 8 threads used 0.997959 seconds
+Testing Hybrid Execution with 16 ranks and 16 threads
+Maximum is 9060.37
+HYB 16 ranks 16 threads used 1.010631 seconds
+fallatti1
+Sun Aug 11 21:36:27 CEST 2024
