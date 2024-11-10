@@ -1,4 +1,5 @@
 import os
+import random
 import numpy as np
 import pandas as pd
 from mpi4py import MPI
@@ -9,10 +10,35 @@ def load_data(file_path):
     X = iris.iloc[:, :-1].values 
     return X
 
+def split_data(data, size, rank):
+    chunk_size = data.shape[0] // size
+    remainder = data.shape[0] % size
+    start = rank * chunk_size + min(rank, remainder)
+    end = start + chunk_size + (1 if rank < remainder else 0)
+    return data[start:end]
+
+def has_converged(centroids, updated_centroids, tolerance, fraction=0.5):
+    # Selecciona una fracción de los índices de los centroides y los verifica
+    indices = random.sample(range(len(centroids)), int(len(centroids) * fraction))
+    return np.all(np.abs(updated_centroids[indices] - centroids[indices]) < tolerance)
+
 def assign_clusters(data, centroids):
     # Distancia euclidiana
     distances = np.sqrt(((data - centroids[:, np.newaxis]) ** 2).sum(axis=2))
     return np.argmin(distances, axis=0)
+
+def compute_centroids(data, labels, n_clusters):
+    # Inicializa centroides y contama la ocurrencia de cada cluster
+    centroids = np.zeros((n_clusters, data.shape[1]))
+    counts = np.bincount(labels, minlength=n_clusters)
+
+    # Puntos por cluster
+    for j in range(n_clusters):
+        centroids[j] = data[labels == j].sum(axis=0)
+
+    # Calc media dividiendo por el conteo de cada cluster
+    centroids /= counts[:, None]
+    return centroids
 
 def show_kmeans(data, labels, n_clusters, centroids):
     plt.figure(figsize=(8, 6))
@@ -35,7 +61,7 @@ def show_kmeans(data, labels, n_clusters, centroids):
 def main(file_path, n_clusters=3):
     data = load_data(file_path)
     iterations=2147483647 # Max int
-    tolerance=1e-4 # Precisión en los centroides
+    tolerance=1e-1 # Precisión en los centroides
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
@@ -51,7 +77,7 @@ def main(file_path, n_clusters=3):
 
     for i in range(iterations):
         # Distribuir datos a cada proceso y asignar a los clusters
-        data_split = np.array_split(data, size)[rank]
+        data_split = split_data(data, size, rank)
         local_labels = assign_clusters(data_split, centroids)
         
         # Recoger en 0
@@ -60,9 +86,9 @@ def main(file_path, n_clusters=3):
         # Calcular nuevos centroides y compararlos con los anteriores
         if rank == 0:
             labels = np.concatenate(labels)
-            updated_centroids = np.array([data[labels == j].mean(axis=0) for j in range(n_clusters)])
+            updated_centroids = compute_centroids(data, labels, n_clusters)
 
-            if np.all(np.abs(updated_centroids - centroids) < tolerance):
+            if has_converged(centroids, updated_centroids, tolerance):
                 break
             centroids = updated_centroids
         
