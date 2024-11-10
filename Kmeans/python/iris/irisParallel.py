@@ -10,6 +10,19 @@ def load_data(file_path):
     X = iris.iloc[:, :-1].values 
     return X
 
+def initialize_centroids_kmeans(data, n_clusters):
+    centroids = [data[np.random.choice(data.shape[0])]]
+    for _ in range(1, n_clusters):
+        distances = np.min(np.sqrt(((data - np.array(centroids)[:, np.newaxis]) ** 2).sum(axis=2)), axis=0)
+        probabilities = distances / distances.sum()
+        cumulative_probabilities = probabilities.cumsum()
+        r = np.random.rand()
+        for j, p in enumerate(cumulative_probabilities):
+            if r < p:
+                centroids.append(data[j])
+                break
+    return np.array(centroids)
+
 def split_data(data, size, rank):
     chunk_size = data.shape[0] // size
     remainder = data.shape[0] % size
@@ -60,22 +73,20 @@ def show_kmeans(data, labels, n_clusters, centroids):
 
 def main(file_path, n_clusters=3):
     data = load_data(file_path)
-    iterations=2147483647 # Max int
-    tolerance=1e-1 # Precisión en los centroides
+    tolerance=1e-10 # Precisión en los centroides
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
     
     if rank == 0:
-        index = np.random.choice(data.shape[0], n_clusters, replace=False)
-        centroids = data[index]
+        centroids = initialize_centroids_kmeans(data, n_clusters)
     else:
         centroids = np.empty((n_clusters, data.shape[1]), dtype=data.dtype)
     
     # Broadcast de los centroides
     comm.Bcast(centroids, root=0)
 
-    for i in range(iterations):
+    while True:
         # Distribuir datos a cada proceso y asignar a los clusters
         data_split = split_data(data, size, rank)
         local_labels = assign_clusters(data_split, centroids)
@@ -88,7 +99,7 @@ def main(file_path, n_clusters=3):
             labels = np.concatenate(labels)
             updated_centroids = compute_centroids(data, labels, n_clusters)
 
-            if has_converged(centroids, updated_centroids, tolerance):
+            if has_converged(centroids, updated_centroids, tolerance, fraction=1.0):
                 break
             centroids = updated_centroids
         
