@@ -1,0 +1,1 @@
+The hybrid version with 16 MPI ranks and 8 OpenMP threads provides the best overall speedup compared to the serial execution. By combining MPI and OpenMP, it effectively utilizes both parallel distributed computing and multi-threading, balancing resource usage and achieving optimal performance.
